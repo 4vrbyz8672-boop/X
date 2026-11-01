@@ -1,0 +1,31 @@
+TANMAY FILE STORE — RENDER / RAILWAY DEPLOY
+
+এই ZIP-এ Render ও Railway—দুই প্ল্যাটফর্মের deploy config আছে। দুটো একসাথে deploy করবেন না; যেকোনো একটি বেছে নিন।
+
+প্রয়োজনীয় Environment Variables (দুটোই):
+1) BOT_TOKEN = BotFather থেকে তৈরি নতুন Telegram bot token
+2) DATABASE_URL = Neon PostgreSQL connection string (sslmode=require সহ)
+
+RENDER WEB SERVICE:
+1. ZIP extract করে ফাইলগুলো GitHub repository-তে upload/push করুন।
+2. Render Dashboard > New > Blueprint নির্বাচন করুন এবং repository connect করুন।
+   অথবা New > Web Service দিয়ে repository connect করুন।
+3. Root Directory ফাঁকা রাখুন (ফাইলগুলো repository root-এ থাকলে)।
+4. Build Command: pip install -r requirements.txt
+5. Start Command: python run.py
+6. Environment-এ BOT_TOKEN এবং DATABASE_URL যোগ করুন।
+7. Deploy করুন। /health URL-এ {"ok":true} এলে web process সাড়া দিচ্ছে।
+
+RAILWAY:
+1. ZIP extract করে ফাইলগুলো GitHub repository-তে upload/push করুন।
+2. Railway > New Project > Deploy from GitHub Repo দিয়ে repository নির্বাচন করুন।
+3. Variables-এ BOT_TOKEN এবং DATABASE_URL যোগ করুন।
+4. railway.json-এর start command ব্যবহার করে deploy হবে; দরকার হলে Start Command: python run.py দিন।
+5. Settings > Networking থেকে Public Domain তৈরি করুন।
+
+IMPORTANT:
+- .env.example কেবল উদাহরণ; সেখানে আসল token/password লিখবেন না।
+- GitHub Actions Secrets এখানে প্রয়োজন নেই; hosting provider-এর Variables/Environment-এ values দিন।
+- Render-এর free instance idle হলে sleep করতে পারে; continuous 24/7 operation-এর জন্য উপযুক্ত paid always-on instance লাগতে পারে। Railway-তেও usage/billing plan অনুযায়ী খরচ হতে পারে।
+- Telegram bot token আগে প্রকাশিত হয়ে থাকলে BotFather থেকে revoke করে নতুন token ব্যবহার করুন।
+- DATABASE_URL অবশ্যই সঠিক Neon PostgreSQL database-এর হতে হবে।
